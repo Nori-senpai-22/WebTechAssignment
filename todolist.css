@@ -1,0 +1,94 @@
+/* === Body Styling === */
+body {
+    font-family: monospace;
+    width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fffefe;
+    border: 1px solid #838282;
+    border-radius: 10px;
+}
+
+/* === Heading === */
+h1 {
+    margin: 0;
+    padding: 0;
+    width: fit-content;
+}
+
+/* === Button Options === */
+.button-options {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* === Buttons === */
+button {
+    background-color: #fffefe;
+    color: #000000;
+    border: 1px solid #000000;
+    border-radius: 5px;
+    font-family: monospace;
+    padding: 10px 20px;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
+
+button:active {
+    background-color: #080808;
+    color: aliceblue;
+}
+
+/* === Input Field === */
+#todo-input {
+    width: 87%;
+    padding: 10px;
+    font-size: 16px;
+    font-family: monospace;
+    border: 1px solid #000000;
+    border-radius: 5px;
+}
+
+/* === To-Do List Styling === */
+#todo-list {
+    margin-top: 20px;
+    padding: 0;
+    list-style-type: none;
+    font-size: medium;
+}
+
+#todo-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+#todo-list li input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+}
+
+#todo-list li span {
+    flex-grow: 1;
+    padding-left: 10px;
+    font-size: 16px;
+}
+
+/* === Task State Styling === */
+.completed {
+    text-decoration: line-through;
+    color: #808080;
+}
+
+/* === Trash Icon === */
+.delete-icon {
+    color: red;
+    cursor: pointer;
+    margin-left: 10px;
+}
