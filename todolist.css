@@ -40,6 +40,11 @@ button:active {
     background-color: #080808;
     color: aliceblue;
 }
+button:hover {
+    background-color:     #000000;
+    color: #fffefe;
+    transition:  0.3s ease;
+}
 
 /* === Input Field === */
 #todo-input {
