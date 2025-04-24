@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Sets the character encoding and makes site responsive on mobile -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Webpage title shown on the browser tab -->
+    <title>To-do List</title>
+
+    <!-- Link to external CSS file -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Link to external JavaScript file (though in this case it's also inlined below) -->
+    <script src="todolist.js"></script>
+
+    <!-- Font Awesome Icons for the trash/delete icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<!-- Embedded CSS for styling the page -->
+<style>
+    /* Body styling */
+    body {
+        font-family: monospace;
+        width: 800px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fffefe;
+        border: 1px solid #838282;
+        border-radius: 10px;
+    }
+
+    /* Heading style */
+    h1 {
+        margin: 0;
+        padding: 0;
+        width: fit-content;
+    }
+
+    /* Container for filter buttons */
+    .button-options {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+    }
+
+    /* Button base styles */
+    button {
+        background-color: #fffefe;
+        color: #000000;
+        border: 1px solid #000000;
+        border-radius: 5px;
+        font-family: monospace;
+        padding: 10px 20px;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+    }
+
+    /* Button active state */
+    button:active {
+        background-color: #080808;
+        color: aliceblue;
+    }
+
+    /* Button hover animation */
+    button:hover {
+        background-color: #000000;
+        color: #fffefe;
+        transition: 0.3s ease;
+    }
+
+    /* Input box styling */
+    #todo-input {
+        width: 87%;
+        padding: 10px;
+        font-size: 16px;
+        font-family: monospace;
+        border: 1px solid #000000;
+        border-radius: 5px;
+    }
+
+    /* To-do list style */
+    #todo-list {
+        margin-top: 20px;
+        padding: 0;
+        list-style-type: none;
+        font-size: medium;
+    }
+
+    /* Each list item */
+    #todo-list li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px;
+        border-radius: 5px;
+        margin-bottom: 10px;
+    }
+
+    /* Checkbox styling */
+    #todo-list li input[type="checkbox"] {
+        width: 20px;
+        height: 20px;
+    }
+
+    /* To-do text */
+    #todo-list li span {
+        flex-grow: 1;
+        padding-left: 10px;
+        font-size: 16px;
+    }
+
+    /* Completed task style */
+    .completed {
+        text-decoration: line-through;
+        color: #808080;
+    }
+
+    /* Delete/trash icon */
+    .delete-icon {
+        color: red;
+        cursor: pointer;
+        margin-left: 10px;
+    }
+</style>
+
+<body>
+    <!-- Title and filter buttons -->
+    <div class="heading-container">
+        <h1>To-Do List</h1>
+
+        <!-- Buttons to filter tasks -->
+        <div class="button-options">
+            <button onclick="filterTodos('all')">All</button>
+            <button onclick="filterTodos('active')">Active</button>
+            <button onclick="filterTodos('completed')">Completed</button>
+            <!-- Button to load fake tasks from an API -->
+            <button onclick="fetchApiTodos()">API</button>
+        </div>
+    </div>
+
+    <!-- Input field and add button -->
+    <div class="add-todo">
+        <input type="text" placeholder="Add a new to-do..." id="todo-input">
+        <button onclick="addTodo()">+ Add</button>
+    </div>
+
+    <!-- List where tasks will be displayed -->
+    <ul id="todo-list"></ul>
+
+    <!-- JavaScript functionality -->
+    <script>
+        // Load to-dos when page loads
+        window.onload = function () {
+            loadTodos();
+        };
+
+        // Toggle the "completed" style when checkbox is clicked
+        function toggleStrike(checkbox) {
+            const li = checkbox.parentElement;
+            const span = checkbox.nextElementSibling;
+
+            span.classList.toggle("completed");
+            li.setAttribute("data-status", checkbox.checked ? "completed" : "active");
+
+            saveTodos(); // Save the updated list
+        }
+
+        // Remove a to-do from the list
+        function deleteTodo(icon) {
+            const li = icon.parentElement;
+            li.remove();
+            saveTodos();
+        }
+
+        // Add new to-do item
+        function addTodo() {
+            const input = document.getElementById("todo-input");
+            const todoText = input.value.trim();
+            if (todoText === "") return;
+
+            const ul = document.getElementById("todo-list");
+
+            const li = document.createElement("li");
+            li.setAttribute("data-status", "active");
+
+            li.innerHTML = `
+                <input type="checkbox" onclick="toggleStrike(this)">
+                <span>${todoText}</span>
+                <i class="fas fa-trash delete-icon" onclick="deleteTodo(this)"></i>
+            `;
+
+            ul.appendChild(li);
+            input.value = "";
+
+            saveTodos();
+        }
+
+        // Filter the list based on status
+        function filterTodos(filter) {
+            const tasks = document.querySelectorAll("#todo-list li");
+
+            tasks.forEach(task => {
+                const status = task.getAttribute("data-status");
+                task.style.display = (filter === "all" || filter === status) ? "flex" : "none";
+            });
+        }
+
+        // Save current to-dos to browser's localStorage
+        function saveTodos() {
+            const todos = [];
+            document.querySelectorAll("#todo-list li").forEach(li => {
+                const checkbox = li.querySelector("input[type='checkbox']");
+                const span = li.querySelector("span");
+                todos.push({
+                    text: span.textContent,
+                    completed: checkbox.checked
+                });
+            });
+
+            localStorage.setItem("todos", JSON.stringify(todos));
+        }
+
+        // Load saved to-dos from localStorage
+        function loadTodos() {
+            const todos = JSON.parse(localStorage.getItem("todos")) || [];
+            const ul = document.getElementById("todo-list");
+            ul.innerHTML = "";
+
+            todos.forEach(todo => {
+                const li = document.createElement("li");
+                li.setAttribute("data-status", todo.completed ? "completed" : "active");
+
+                li.innerHTML = `
+                    <input type="checkbox" onclick="toggleStrike(this)" ${todo.completed ? "checked" : ""}>
+                    <span class="${todo.completed ? "completed" : ""}">${todo.text}</span>
+                    <i class="fas fa-trash delete-icon" onclick="deleteTodo(this)"></i>
+                `;
+
+                ul.appendChild(li);
+            });
+        }
+
+        // Load fake todos from external API for testing/demo
+        function fetchApiTodos() {
+            fetch("https://jsonplaceholder.typicode.com/todos?_limit=10")
+                .then(response => response.json())
+                .then(todos => {
+                    const ul = document.getElementById("todo-list");
+                    ul.innerHTML = "";
+
+                    todos.forEach(todo => {
+                        const li = document.createElement("li");
+                        li.setAttribute("data-status", todo.completed ? "completed" : "active");
+
+                        li.innerHTML = `
+                            <input type="checkbox" onclick="toggleStrike(this)" ${todo.completed ? "checked" : ""}>
+                            <span class="${todo.completed ? "completed" : ""}">${todo.title}</span>
+                            <i class="fas fa-trash delete-icon" onclick="deleteTodo(this)"></i>
+                        `;
+
+                        ul.appendChild(li);
+                    });
+                });
+        }
+    </script>
+</body>
+</html>
