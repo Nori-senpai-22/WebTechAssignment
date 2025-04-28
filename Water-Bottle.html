@@ -1,0 +1,192 @@
+<html lang="en"> <!-- Sets the language to English -->
+<head>
+  <meta charset="UTF-8"> <!-- Allows special characters (like emojis, symbols) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Makes the website responsive -->
+  <title>EcoSmart Water Bottle</title> <!-- Title shown in the browser tab -->
+
+  <style>
+    body {
+      font-family: monospace; /* Sets a cool code-style font */
+      margin: 0; /* Removes default spacing around the body */
+      padding: 0;
+      font-size: xx-large; /* Makes everything pretty big */
+    }
+
+    nav {
+      background-color: #333; /* Dark navbar background */
+      color: white; /* Text color */
+      padding: 40px 20px 10px 20px; /* Space inside the nav: top, right, bottom, left */
+      text-align: center; /* Centers the text horizontally */
+      height: 60px; /* Fixes nav height */
+    }
+
+    nav ul {
+      list-style-type: none; /* Removes bullets from list items */
+      margin: 0;
+      padding: 0;
+    }
+
+    nav ul li {
+      display: inline; /* Makes the list items appear in a row */
+      margin-right: 20px; /* Space between links */
+    }
+
+    nav ul li a {
+      color: white; /* Link color */
+      text-decoration: none; /* Removes underline */
+    }
+
+    .water-container {
+      text-align: center; /* Center content inside the div */
+      margin: 20px;
+      padding: 20px;
+      transition: background-color 0.3s ease; /* Smooth background color change */
+    }
+
+    .button-1,
+    .button-2 {
+      background-color: #4CAF50; /* Green buttons */
+      border: none; /* No border outline */
+      color: white;
+      font-family: monospace;
+      border-radius: 5px; /* Rounded corners */
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 19px;
+      margin: 4px 2px;
+      cursor: pointer; /* Makes cursor a pointer on hover */
+    }
+
+    .contact-container {
+      text-align: center;
+      margin: 20px;
+      font-family: monospace;
+      font-size: xx-large;
+      background-color: #333; /* Dark background */
+      padding: 30px;
+      color: white; /* Text color */
+    }
+
+    footer div h2 {
+      font-family: monospace;
+      font-size: xx-large;
+    }
+
+    #name,
+    #email,
+    #message {
+      width: 50%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc; /* Light grey border */
+    }
+
+    #terms-conditions {
+      margin: 0 auto; /* Center horizontally */
+      width: 50%;
+      padding: 10px;
+      font-size: large;
+      text-align: left;
+    }
+
+    textarea {
+      width: 50%;
+      height: 100px;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    #color-select {
+      font-size: 18px;
+      padding: 8px 12px;
+      margin: 10px;
+      border-radius: 5px;
+      font-family: monospace;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- NAVIGATION BAR -->
+  <nav>
+    <ul>
+      <li><a href="#">Home</a></li> <!-- Link to home -->
+      <li><a href="#">Features</a></li> <!-- Link to features -->
+      <li><a href="#">Pricing</a></li> <!-- Link to pricing -->
+      <li><a href="#">Contact Us</a></li> <!-- Link to contact -->
+    </ul>
+  </nav>
+
+  <!-- MAIN PRODUCT SECTION -->
+  <div class="water-container">
+    <h1>EcoSmart Water Bottle</h1>
+    <img src="bottle.jpg" alt="Water Bottle" width="300px" height="300px"> <!-- Product image -->
+    <p>EcoSmart Water Bottle</p>
+
+    <!-- COLOR DROPDOWN -->
+    <label for="color-select">Choose a color:</label>
+    <select id="color-select"> <!-- Dropdown to choose color -->
+      <option value="white">White</option>
+      <option value="lightblue">Light Blue</option>
+      <option value="lightgreen">Light Green</option>
+      <option value="lightpink">Light Pink</option>
+      <option value="lightgray">Light Gray</option>
+    </select>
+
+    <br>
+    <button class="button-1">Buy Now</button> <!-- Buy button -->
+    <p id="price">Total Price: R750.00</p> <!-- Default price text -->
+  </div>
+
+  <!-- FOOTER CONTACT SECTION -->
+  <footer>
+    <div class="contact-container">
+      <h2>Contact Us</h2>
+      <input type="text" placeholder="Your name" id="name" required><br> <!-- Name field -->
+      <input type="text" placeholder="Your email" id="email" required><br> <!-- Email field -->
+      <textarea id="message" placeholder="Your message"></textarea><br> <!-- Message textarea -->
+      <p id="terms-conditions">
+        <input type="checkbox"> I agree to the <a href="#">Terms and Conditions</a> <!-- Terms checkbox -->
+      </p>
+      <button class="button-2">Submit</button> <!-- Submit button -->
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT FUNCTIONALITY -->
+  <script>
+  
+    const colorSelect = document.getElementById("color-select"); // Get the color dropdown
+    const waterContainer = document.querySelector(".water-container"); // Get product section
+    const priceTag = document.getElementById("price"); // Get price text
+
+    colorSelect.addEventListener("change", function () { // When user changes color
+      const selectedColor = colorSelect.value; // Store selected color
+      waterContainer.style.backgroundColor = selectedColor; // Change background color
+
+      // Set price based on selected color 
+      let price;
+
+      if (selectedColor === "lightblue") {
+        price = "R800.00"; // Ocean edition
+      } else if (selectedColor === "lightgreen") {
+        price = "R850.00"; // Eco edition
+      } else if (selectedColor === "lightpink") {
+        price = "R780.00"; // Cute edition
+      } else if (selectedColor === "lightgray") {
+        price = "R770.00"; // Minimal edition
+      } else {
+        price = "R750.00"; // Default white
+      }
+
+      priceTag.textContent = `Total Price: ${price}`; // Update price on screen
+    });
+  </script>
+
+</body>
+</html>
